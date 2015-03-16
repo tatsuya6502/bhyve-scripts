@@ -110,6 +110,18 @@ adjust the clock. Run +ntpdate+ to fix it.2
 ----
 
 
+== When Linux Kernel in a VM is Upgraded
+
+Edit +grub.in+ so that it will boot from the latest Linux Kernel.
+
+.bhyve-scripts/centos7/grub.in
+----
+linux (hd0,msdos1)/vmlinuz-3.10.0-123.20.1.el7.x86_64 root=/dev/mapper/centos-root
+initrd (hd0,msdos1)/initramfs-3.10.0-123.20.1.el7.x86_64.img
+boot
+----
+
+
 == License
 
 bhyve-script is open-sourced under the MIT license. See the
