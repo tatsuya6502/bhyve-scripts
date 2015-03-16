@@ -1,0 +1,116 @@
+== bhyve-scripts
+
+A collection of shell scripts to run bhyve VMs on my FreeBSD 10.x
+desktop machine.
+
+== Environment
+
+- FreeBSD 10.1-RELEASE
+- ZFS zvols for bhyve VMs' virtual disks
+- Bridged tap devices for network access (Currently only works with
+  wired network)
+- Linux VMs (CentOS 7, RHEL 7 and Ubuntu 14.04 LTS)
+
+
+== ZFS zvols
+
+These +disk1+ are thin-provisioned zvols.
+
+----
+$ zfs list -r zroot0/bhyve
+NAME                                    USED  AVAIL  REFER  MOUNTPOINT
+zroot0/bhyve                           41.0G   283G   144K  none
+zroot0/bhyve/centos7-docker1           23.2G   283G   144K  none
+zroot0/bhyve/centos7-docker1/disk1     23.2G   283G  23.2G  -
+zroot0/bhyve/rhel7-ost-icehouse        7.55G   283G   144K  none
+zroot0/bhyve/rhel7-ost-icehouse/disk1  7.55G   283G  8.27G  -
+zroot0/bhyve/rhel7-ost-juno            5.20G   283G   144K  none
+zroot0/bhyve/rhel7-ost-juno/disk1      5.20G   283G  4.76G  -
+zroot0/bhyve/ubuntu-14.04              5.00G   283G   144K  none
+zroot0/bhyve/ubuntu-14.04/disk1        5.00G   283G  5.00G  -
+----
+
+
+== Prerequisites
+
+(*TODO*) Install grub-bhyve etc.
+
+
+== Setup
+
+This will load kernel modules for bhyve and create four tap devices
+(one device for each VM).
+
+----
+$ sudo ./setup.sh
+----
+
+
+== Installing OS -- Booting a VM from ISO Image
+
+Edit +device.map+.
+
+.bhyve-scripts/centos7/device.map
+----
+(hd0) /dev/zvol/zroot0/bhyve/centos7-docker1/disk1
+(cd0) /home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso
+----
+
+Run +grub-bhyve+ as root.
+
+----
+$ sudo grub-bhyve -m device.map -r cd0 -M 4096M centos7-docker1
+grup> ls
+(hd0) (hd0,msdos2) (hd0,msdos1) (cd0) (cd0,msdos2) (host) (lvm/centos-root) (lvm/centos-swap)
+grub> ls (cd0)/
+CentOS_BuildTag EFI/ EULA GPL images/ isolinux/ LiveOS/ Packages/
+repodata/ RPM-GPG-KEY-CentOS-Testing-7 RPM-GPG-KEY-CentOS-7 TRANS.TBL
+grup> ls (cd0)/isolinux
+boot.cat boot.msg grub.conf initrd.img isolinux.bin isolinux.cfg
+memtest splash.png TRANS.TBL upgrade.img vesamenu.c32 vmlinuz
+grub> linux (cd0)/isolinux/vmlinuz
+grub> initrd (cd0)/isolinux/initrd.img
+grub> boot
+----
+
+Run +bhyve+ as root. Note that the installer DVD ISO attached to it.
+
+----
+$ sudo bhyve -c 4 -m 4096M -H -P -A -l com1,stdio \
+    -s 0:0,hostbridge -s 1:0,lpc \
+    -s 2:0,virtio-net,tap1 \
+    -s 3,ahci-cd,/home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso \
+    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/centos7-docker1/disk1 centos7-docker1
+----
+
+When installation is completed, press the "Restart" button on the
+installer screen. This will shutdown the VM and drop you into a shell
+prompt (instead of restarting). Proceed to next chapter to boot the VM
+from the disk image.
+
+
+== Booting a VM from Disk Image
+
+----
+$ cd centos7-docker1
+$ sudo ./run.sh
+----
+
+=== IMPORTANT: Adjust the System Clock
+
+Login to the VM and *ensure the system clock is correct*. By some
+reason it's usually advance 3 days, so `ntpd` won't be able to
+adjust the clock. Run +ntpdate+ to fix it.2
+
+----
+[docker1] /home/tatsuya% sudo systemctl stop ntpd.service
+[docker1] /home/tatsuya% sudo ntpdate -b pool.ntp.org
+16 Mar 13:46:27 ntpdate[2046]: step time server 202.112.29.82 offset -277199.180289 sec
+[docker1] /home/tatsuya% sudo systemctl start ntpd.service
+----
+
+
+== License
+
+bhyve-script is open-sourced under the MIT license. See the
+link:LICENSE[LICENSE] file for details.
