@@ -1,0 +1,2 @@
+(hd0) /dev/zvol/zroot0/bhyve/ubuntu-14.04/disk1
+(cd0) /home/tatsuya/installers/ubuntu/ubuntu-14.04.1-server-amd64.iso

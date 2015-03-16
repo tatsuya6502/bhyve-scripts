@@ -1,0 +1,4 @@
+linux (hd0,msdos1)/vmlinuz-3.13.0-45-generic root=/dev/mapper/ubuntu--1404--vg-root
+initrd (hd0,msdos1)/initrd.img-3.13.0-45-generic
+boot
+

@@ -1,0 +1,4 @@
+linux (hd0,msdos1)/vmlinuz-3.10.0-123.20.1.el7.x86_64 root=/dev/mapper/rhel-root
+initrd (hd0,msdos1)/initramfs-3.10.0-123.20.1.el7.x86_64.img
+boot
+
