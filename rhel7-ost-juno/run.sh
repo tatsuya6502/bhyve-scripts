@@ -15,4 +15,3 @@ bhyve -c 4 -m 4096M -H -P -A -l com1,stdio \
       rhel7-ost-juno
 
 bhyvectl --destroy --vm=rhel7-ost-juno
-

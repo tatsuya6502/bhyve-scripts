@@ -15,4 +15,3 @@ bhyve -c 4 -m 4096M -H -P -A -l com1,stdio \
       centos7-docker1
 
 bhyvectl --destroy --vm=centos7-docker1
-

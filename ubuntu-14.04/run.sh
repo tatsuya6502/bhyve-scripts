@@ -15,4 +15,3 @@ bhyve -c 4 -m 2048M -H -P -A -l com1,stdio \
       ubuntu-14.04
 
 bhyvectl --destroy --vm=ubuntu-14.04
-
