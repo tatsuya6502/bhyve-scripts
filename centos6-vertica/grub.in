@@ -1,0 +1,3 @@
+linux (hd0,msdos1)/vmlinuz-2.6.32-504.16.2.el6.x86_64 root=/dev/vda3
+initrd (hd0,msdos1)/initramfs-2.6.32-504.16.2.el6.x86_64.img
+boot
