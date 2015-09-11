@@ -5,7 +5,7 @@ desktop machine.
 
 == Environment
 
-- FreeBSD 10.1-RELEASE
+- FreeBSD 10.2-RELEASE
 - ZFS zvols for bhyve VMs' virtual disks
 - Bridged tap devices for network access (Currently only works with
   wired network)
@@ -133,6 +133,10 @@ adjust the clock. Run +ntpdate+ to fix it.2
 16 Mar 13:46:27 ntpdate[2046]: step time server 202.112.29.82 offset -277199.180289 sec
 [docker1] /home/tatsuya% sudo systemctl start ntpd.service
 ----
+
+NOTE: This may be
+https://www.quernus.co.uk/2015/07/27/openbsd-as-freebsd-router/#comment-2163062052[fixed]
+in 10.2-RELEASE?
 
 
 == When Linux Kernel in a VM is Upgraded
