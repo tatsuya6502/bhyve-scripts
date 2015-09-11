@@ -30,6 +30,11 @@ zroot0/bhyve/ubuntu-14.04              5.00G   283G   144K  none
 zroot0/bhyve/ubuntu-14.04/disk1        5.00G   283G  5.00G  -
 ----
 
+----
+$ sudo zfs create zroot0/bhyve/centos7-docker1
+$ sudo zfs create -V 48G -s zroot0/bhyve/centos7-docker1/disk1
+----
+
 
 == Prerequisites
 
@@ -72,6 +77,26 @@ grub> linux (cd0)/isolinux/vmlinuz
 grub> initrd (cd0)/isolinux/initrd.img
 grub> boot
 ----
+
+*NOTE*:
+
+For CentOS, it's recommended to perform VNC-based graphical
+installation rather than console-based installation because graphical
+one gives you more customization options (e.g. custom disk layout)
+To do that, add the following options to +linux+ command.
+
+----
+grub> linux (cd0)/isolinux/vmlinuz vnc headless ip=dhcp ksdevice=eth0 lang=en_US keymap=us
+----
+
+Once the installer started, it will give tell you VNC server address
+and port.
+
+For example,
+----
+Please manually connect your vnc client to 10.0.0.117:1 to begin the install.
+----
+
 
 Run +bhyve+ as root. Note that the installer DVD ISO attached to it.
 
