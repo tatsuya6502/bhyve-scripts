@@ -3,6 +3,7 @@
 A collection of shell scripts to run bhyve VMs on my FreeBSD 10.x
 desktop machine.
 
+
 == Environment
 
 - FreeBSD 10.2-RELEASE
@@ -19,15 +20,19 @@ These +disk1+ are thin-provisioned zvols.
 ----
 $ zfs list -r zroot0/bhyve
 NAME                                    USED  AVAIL  REFER  MOUNTPOINT
-zroot0/bhyve                           41.0G   283G   144K  none
-zroot0/bhyve/centos7-docker1           23.2G   283G   144K  none
-zroot0/bhyve/centos7-docker1/disk1     23.2G   283G  23.2G  -
-zroot0/bhyve/rhel7-ost-icehouse        7.55G   283G   144K  none
-zroot0/bhyve/rhel7-ost-icehouse/disk1  7.55G   283G  8.27G  -
-zroot0/bhyve/rhel7-ost-juno            5.20G   283G   144K  none
-zroot0/bhyve/rhel7-ost-juno/disk1      5.20G   283G  4.76G  -
-zroot0/bhyve/ubuntu-14.04              5.00G   283G   144K  none
-zroot0/bhyve/ubuntu-14.04/disk1        5.00G   283G  5.00G  -
+zroot0/bhyve                            107G   364G   144K  none
+zroot0/bhyve/centos6-vertica           49.7G   364G    96K  none
+zroot0/bhyve/centos6-vertica/disk1     49.7G   364G  41.2G  -
+zroot0/bhyve/centos7-docker1           38.2G   364G   144K  none
+zroot0/bhyve/centos7-docker1/disk1     38.2G   364G  32.3G  -
+zroot0/bhyve/openbsd                    969M   364G    96K  none
+zroot0/bhyve/openbsd/disk1              969M   364G   969M  -
+zroot0/bhyve/rhel7-ost-icehouse        7.55G   364G   144K  none
+zroot0/bhyve/rhel7-ost-icehouse/disk1  7.55G   364G  8.27G  -
+zroot0/bhyve/rhel7-ost-juno            5.20G   364G   144K  none
+zroot0/bhyve/rhel7-ost-juno/disk1      5.20G   364G  4.76G  -
+zroot0/bhyve/ubuntu-14.04              5.00G   364G   144K  none
+zroot0/bhyve/ubuntu-14.04/disk1        5.00G   364G  5.00G  -
 ----
 
 ----
@@ -51,7 +56,7 @@ $ sudo ./setup.sh
 ----
 
 
-== Installing OS -- Booting a VM from ISO Image
+== Installing GNU/Linux -- Booting a VM from installer ISO Image
 
 Edit +device.map+.
 
@@ -64,6 +69,7 @@ Edit +device.map+.
 Run +grub-bhyve+ as root.
 
 ----
+$ cd centos7
 $ sudo grub-bhyve -m device.map -r cd0 -M 4096M centos7-docker1
 grup> ls
 (hd0) (hd0,msdos2) (hd0,msdos1) (cd0) (cd0,msdos2) (host) (lvm/centos-root) (lvm/centos-swap)
@@ -73,6 +79,7 @@ repodata/ RPM-GPG-KEY-CentOS-Testing-7 RPM-GPG-KEY-CentOS-7 TRANS.TBL
 grup> ls (cd0)/isolinux
 boot.cat boot.msg grub.conf initrd.img isolinux.bin isolinux.cfg
 memtest splash.png TRANS.TBL upgrade.img vesamenu.c32 vmlinuz
+
 grub> linux (cd0)/isolinux/vmlinuz
 grub> initrd (cd0)/isolinux/initrd.img
 grub> boot
@@ -98,14 +105,16 @@ Please manually connect your vnc client to 10.0.0.117:1 to begin the install.
 ----
 
 
-Run +bhyve+ as root. Note that the installer DVD ISO attached to it.
+Run +bhyve+ as root. Note that the VM has the installer DVD ISO
+attached.
 
 ----
 $ sudo bhyve -c 4 -m 4096M -H -P -A -l com1,stdio \
     -s 0:0,hostbridge -s 1:0,lpc \
     -s 2:0,virtio-net,tap1 \
     -s 3,ahci-cd,/home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso \
-    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/centos7-docker1/disk1 centos7-docker1
+    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/centos7-docker1/disk1 \
+    centos7-docker1
 ----
 
 When installation is completed, press the "Restart" button on the
@@ -114,12 +123,62 @@ prompt (instead of restarting). Proceed to next chapter to boot the VM
 from the disk image.
 
 
-== Booting a VM from Disk Image
+== Booting a GNU/Linux VM from Disk Image
 
 ----
-$ cd centos7-docker1
+$ cd centos7
 $ sudo ./run.sh
 ----
+
+
+== Installing OpenBSD -- Booting a VM from installer ISO Image
+
+Edit +device.map+.
+
+.bhyve-scripts/openbsd/device.map
+----
+(hd0) /dev/zvol/zroot0/bhyve/openbsd/disk1
+(cd0) /home/tatsuya/installers/openbsd/openbsd-5.7/install57.iso
+----
+
+Run +grub-bhyve+ as root. Ensure to boot with the OpenBSD install
+kernel (+bsd.rd+).
+
+----
+$ cd openbsd
+$ sudo grub-bhyve -m device.map -r cd0 -M 256M openbsd
+grup> ls
+(hd0) (cd0) (host)
+grub> ls (cd0)/
+5.7/ etc/ TRANS.TBL
+grup> ls (cd0)/5.7
+amd64/ TRANS.TBL
+grub> ls (cd0)/5.7/amd64/
+base57.tgz boot.catalog bsd bsd.mp bsd.rd cdboot cdbr comp57.tgz
+game57.tgz INSTALL.amd64 man57.tgz SHA256 TRANS.TBL xbase57.tgz
+xfont57.tgz xserv57.tgz xshare57.tgz
+
+grub> kopenbsd -h com0 (cd0)/5.7/amd64/bsd.rd
+grub> boot
+----
+
+*NOTE*: https://forums.freebsd.org/threads/howto-bhyve-using-openbsd-as-main-firewall-in-freebsd.50470/#post-282880[Example]
+
+
+Run +bhyve+ as root. Note that the VM has the installer ISO
+attached. Also +-W+ option seems required. It forces virtio to use
+single-vector MSI.
+
+----
+$ sudo bhyve -W -m 256M -H -P -A -l com1,stdio \
+    -s 0:0,hostbridge \
+    -s 1:0,lpc \
+    -s 2:0,virtio-net,tap4 \
+    -s 3,ahci-cd,/home/tatsuya/installers/openbsd/openbsd-5.7/install57.iso \
+    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/openbsd/disk1 \
+    openbsd
+----
+
 
 === IMPORTANT: Adjust the System Clock
 
@@ -134,9 +193,8 @@ adjust the clock. Run +ntpdate+ to fix it.2
 [docker1] /home/tatsuya% sudo systemctl start ntpd.service
 ----
 
-NOTE: This may be
-https://www.quernus.co.uk/2015/07/27/openbsd-as-freebsd-router/#comment-2163062052[fixed]
-in 10.2-RELEASE?
+*NOTE*: This might be fixed in 10.2-RELEASE
+(https://www.quernus.co.uk/2015/07/27/openbsd-as-freebsd-router/#comment-2163062052[Reference])
 
 
 == When Linux Kernel in a VM is Upgraded

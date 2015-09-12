@@ -11,7 +11,7 @@ sysctl net.inet.ip.forwarding=1
 # tap1: ubuntu-14.04
 # tap2: rhel7-ost-juno
 # tap3: rhel7-ost-icehouse
-# tap4: (unused)
+# tap4: openbsd
 # tap5: centos6-vertica
 
 ifconfig tap0 create
