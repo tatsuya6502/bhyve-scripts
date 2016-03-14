@@ -1,2 +1,2 @@
-(hd0) /dev/zvol/zroot0/bhyve/centos7-docker1/disk1
+(hd0) /dev/zvol/zroot/bhyve/centos7-docker/disk1
 (cd0) /home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso

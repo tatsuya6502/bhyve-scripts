@@ -8,24 +8,28 @@ sysctl net.link.tap.up_on_open=1
 sysctl net.inet.ip.forwarding=1
 
 # tap0: centos7-docker1
-# tap1: ubuntu-14.04
-# tap2: rhel7-ost-juno
-# tap3: rhel7-ost-icehouse
-# tap4: openbsd
-# tap5: centos6-vertica
+# tap1: centos6-hibari1
+# tap2: centos6-hibari2
+# tap3: rhel7-ost-kilo
+# tap4: openbsd - global
+# tap5: 
+# tap6: openbsd - local
 
 ifconfig tap0 create
 ifconfig tap1 create
 ifconfig tap2 create
 ifconfig tap3 create
 ifconfig tap4 create
-ifconfig tap5 create
+# ifconfig tap5 create
+ifconfig tap6 create
 
+# DS57U5 has two NICs, em0 and igb0
+# Global Bridge (OpenBSD)
 ifconfig bridge0 create
-ifconfig bridge0 addm tap0 addm bge0 up
-# ifconfig bridge0 addm tap0 addm wlan0 up
-ifconfig bridge0 addm tap1
-ifconfig bridge0 addm tap2
-ifconfig bridge0 addm tap3
-ifconfig bridge0 addm tap4
-ifconfig bridge0 addm tap5
+ifconfig bridge0 addm em0 addm tap4 up
+
+# Local Bridge (Others)
+ifconfig bridge1 create
+ifconfig bridge1 addm igb0 addm tap6 up
+ifconfig bridge1 addm tap0 addm tap1 addm tap2 addm tap3
+# ifconfig bridge1 addm tap5
