@@ -7,7 +7,7 @@ kldload nmdm
 sysctl net.link.tap.up_on_open=1
 sysctl net.inet.ip.forwarding=1
 
-# tap0: centos7-docker1
+# tap0: centos6-hibari3
 # tap1: ubuntu-14.04
 # tap2: rhel7-ost-juno
 # tap3: rhel7-ost-icehouse
