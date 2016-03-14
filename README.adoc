@@ -1,16 +1,18 @@
 == bhyve-scripts
 
-A collection of shell scripts to run bhyve VMs on my FreeBSD 10.x
-desktop machine.
+A collection of shell scripts to run bhyve VMs on my FreeBSD desktop
+and server machines.
 
 
 == Environment
 
-- FreeBSD 10.2-RELEASE
-- ZFS zvols for bhyve VMs' virtual disks
-- Bridged tap devices for network access (Currently only works with
-  wired network)
-- Linux VMs (CentOS 7, RHEL 7 and Ubuntu 14.04 LTS)
+- *Host Machines*
+  * *FreeBSD 10.2-RELEASE*
+  * ZFS zvols as the virtual disks for bhyve VMs
+  * Bridged tap devices for network access
+- *Guest Machines*
+  * *Linux Guests:* CentOS 6, 7, RHEL 7 and Ubuntu 14.04 LTS
+  * *BSD Guests:* OpenBSD 5.8
 
 
 == ZFS zvols
@@ -18,26 +20,26 @@ desktop machine.
 These +disk1+ are thin-provisioned zvols.
 
 ----
-$ zfs list -r zroot0/bhyve
+$ zfs list -r zroot/bhyve
 NAME                                    USED  AVAIL  REFER  MOUNTPOINT
-zroot0/bhyve                            107G   364G   144K  none
-zroot0/bhyve/centos6-vertica           49.7G   364G    96K  none
-zroot0/bhyve/centos6-vertica/disk1     49.7G   364G  41.2G  -
-zroot0/bhyve/centos7-docker1           38.2G   364G   144K  none
-zroot0/bhyve/centos7-docker1/disk1     38.2G   364G  32.3G  -
-zroot0/bhyve/openbsd                    969M   364G    96K  none
-zroot0/bhyve/openbsd/disk1              969M   364G   969M  -
-zroot0/bhyve/rhel7-ost-icehouse        7.55G   364G   144K  none
-zroot0/bhyve/rhel7-ost-icehouse/disk1  7.55G   364G  8.27G  -
-zroot0/bhyve/rhel7-ost-juno            5.20G   364G   144K  none
-zroot0/bhyve/rhel7-ost-juno/disk1      5.20G   364G  4.76G  -
-zroot0/bhyve/ubuntu-14.04              5.00G   364G   144K  none
-zroot0/bhyve/ubuntu-14.04/disk1        5.00G   364G  5.00G  -
+zroot/bhyve                            107G   364G   144K  none
+zroot/bhyve/centos6-vertica           49.7G   364G    96K  none
+zroot/bhyve/centos6-vertica/disk1     49.7G   364G  41.2G  -
+zroot/bhyve/centos7-docker1           38.2G   364G   144K  none
+zroot/bhyve/centos7-docker1/disk1     38.2G   364G  32.3G  -
+zroot/bhyve/openbsd                    969M   364G    96K  none
+zroot/bhyve/openbsd/disk1              969M   364G   969M  -
+zroot/bhyve/rhel7-ost-icehouse        7.55G   364G   144K  none
+zroot/bhyve/rhel7-ost-icehouse/disk1  7.55G   364G  8.27G  -
+zroot/bhyve/rhel7-ost-juno            5.20G   364G   144K  none
+zroot/bhyve/rhel7-ost-juno/disk1      5.20G   364G  4.76G  -
+zroot/bhyve/ubuntu-14.04              5.00G   364G   144K  none
+zroot/bhyve/ubuntu-14.04/disk1        5.00G   364G  5.00G  -
 ----
 
 ----
-$ sudo zfs create zroot0/bhyve/centos7-docker1
-$ sudo zfs create -V 48G -s zroot0/bhyve/centos7-docker1/disk1
+$ sudo zfs create zroot/bhyve/centos7-docker1
+$ sudo zfs create -V 48G -s zroot/bhyve/centos7-docker1/disk1
 ----
 
 
@@ -48,21 +50,21 @@ $ sudo zfs create -V 48G -s zroot0/bhyve/centos7-docker1/disk1
 
 == Setup
 
-This will load kernel modules for bhyve and create four tap devices
-(one device for each VM).
+The following script loads the kernel modules for bhyve and creates
+tap devices for the VMs.
 
 ----
 $ sudo ./setup.sh
 ----
 
 
-== Installing GNU/Linux -- Booting a VM from installer ISO Image
+== Installing Linux -- Booting a VM from installer ISO Image
 
 Edit +device.map+.
 
 .bhyve-scripts/centos7/device.map
 ----
-(hd0) /dev/zvol/zroot0/bhyve/centos7-docker1/disk1
+(hd0) /dev/zvol/zroot/bhyve/centos7-docker1/disk1
 (cd0) /home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso
 ----
 
@@ -113,7 +115,7 @@ $ sudo bhyve -c 4 -m 4096M -H -P -A -l com1,stdio \
     -s 0:0,hostbridge -s 1:0,lpc \
     -s 2:0,virtio-net,tap1 \
     -s 3,ahci-cd,/home/tatsuya/installers/centos/CentOS-7.0-1406-x86_64-DVD.iso \
-    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/centos7-docker1/disk1 \
+    -s 4,virtio-blk,/dev/zvol/zroot/bhyve/centos7-docker1/disk1 \
     centos7-docker1
 ----
 
@@ -123,10 +125,19 @@ prompt (instead of restarting). Proceed to next chapter to boot the VM
 from the disk image.
 
 
-== Booting a GNU/Linux VM from Disk Image
+== Booting a Linux VM from Disk Image
 
 ----
 $ cd centos7
+----
+
+Edit +grub.in+. You might want to take a look at grub menu for kernel
+parameters.
+
+
+Run the VM.
+
+----
 $ sudo ./run.sh
 ----
 
@@ -137,7 +148,7 @@ Edit +device.map+.
 
 .bhyve-scripts/openbsd/device.map
 ----
-(hd0) /dev/zvol/zroot0/bhyve/openbsd/disk1
+(hd0) /dev/zvol/zroot/bhyve/openbsd/disk1
 (cd0) /home/tatsuya/installers/openbsd/openbsd-5.7/install57.iso
 ----
 
@@ -175,7 +186,7 @@ $ sudo bhyve -W -m 256M -H -P -A -l com1,stdio \
     -s 1:0,lpc \
     -s 2:0,virtio-net,tap4 \
     -s 3,ahci-cd,/home/tatsuya/installers/openbsd/openbsd-5.7/install57.iso \
-    -s 4,virtio-blk,/dev/zvol/zroot0/bhyve/openbsd/disk1 \
+    -s 4,virtio-blk,/dev/zvol/zroot/bhyve/openbsd/disk1 \
     openbsd
 ----
 
