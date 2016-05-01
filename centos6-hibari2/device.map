@@ -1,0 +1,5 @@
+# (hd0) /dev/zvol/zroot/bhyve/centos6-base/disk1
+# (hd0) /dev/zvol/zroot/bhyve/centos6-hyperstore-base-2016-01-01/disk1
+(hd0) /dev/zvol/zroot/bhyve/centos6-hyperstore-hibari2-2016-05-01/disk1
+# (hd0) /dev/zvol/zroot/bhyve/centos6-hibari1-YYYY-MM-DD/disk1
+# (cd0) /home/tatsuya/installers/centos-6.7/CentOS-6.7-x86_64-bin-DVD1.iso
