@@ -1,2 +1,2 @@
 (hd0) /dev/zvol/zroot/bhyve/openbsd/disk1
-(cd0) /home/tatsuya/installers/openbsd/openbsd-5.9/amd64/install59.iso
+(cd0) /home/tatsuya/installers/openbsd/openbsd-6.0/amd64/install60.iso
