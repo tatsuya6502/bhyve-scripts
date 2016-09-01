@@ -12,7 +12,7 @@ sysctl net.inet.ip.forwarding=1
 # tap2: centos6-hibari2
 # tap3: rhel7-ost-kilo
 # tap4: openbsd - global
-# tap5: 
+# tap5:
 # tap6: openbsd - local
 
 ifconfig tap0 create
@@ -32,4 +32,5 @@ ifconfig bridge0 addm em0 addm tap4 up
 ifconfig bridge1 create
 ifconfig bridge1 addm igb0 addm tap6 up
 ifconfig bridge1 addm tap0 addm tap1 addm tap2 addm tap3
+ifconfig brigde1 addm wlan0
 # ifconfig bridge1 addm tap5
