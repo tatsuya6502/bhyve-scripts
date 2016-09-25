@@ -32,5 +32,5 @@ ifconfig bridge0 addm em0 addm tap4 up
 ifconfig bridge1 create
 ifconfig bridge1 addm igb0 addm tap6 up
 ifconfig bridge1 addm tap0 addm tap1 addm tap2 addm tap3
-ifconfig brigde1 addm wlan0
+ifconfig bridge1 addm wlan0
 # ifconfig bridge1 addm tap5
