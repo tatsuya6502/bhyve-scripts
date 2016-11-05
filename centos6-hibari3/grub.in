@@ -1,0 +1,3 @@
+linux (hd0,msdos1)/vmlinuz-2.6.32-642.3.1.el6.x86_64 root=/dev/mapper/vg_hibari3-lv_root
+initrd (hd0,msdos1)/initramfs-2.6.32-642.3.1.el6.x86_64.img
+boot
