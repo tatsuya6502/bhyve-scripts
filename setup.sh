@@ -11,7 +11,7 @@ sysctl net.inet.ip.forwarding=1
 # tap1: ubuntu-14.04
 # tap2: rhel7-ost-juno
 # tap3: rhel7-ost-icehouse
-# tap4: openbsd
+# tap4: openbsd-dev
 # tap5: centos6-vertica
 # tap6: rhel7-ost-liberty (external)
 # tap7: rhel7-ost-liberty (internal)
