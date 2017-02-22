@@ -12,7 +12,7 @@ sysctl net.inet.ip.forwarding=1
 # tap2: centos6-hibari2
 # tap3: rhel7-ost-kilo
 # tap4: openbsd - global
-# tap5:
+# tap5: ubuntu1604-docker1
 # tap6: openbsd - local
 
 ifconfig tap0 create
@@ -20,7 +20,7 @@ ifconfig tap1 create
 ifconfig tap2 create
 ifconfig tap3 create
 ifconfig tap4 create
-# ifconfig tap5 create
+ifconfig tap5 create
 ifconfig tap6 create
 
 # DS57U5 has two NICs, em0 and igb0
@@ -31,6 +31,9 @@ ifconfig bridge0 addm em0 addm tap4 up
 # Local Bridge (Others)
 ifconfig bridge1 create
 ifconfig bridge1 addm igb0 addm tap6 up
-ifconfig bridge1 addm tap0 addm tap1 addm tap2 addm tap3
+ifconfig bridge1 addm tap0
+ifconfig bridge1 addm tap1
+ifconfig bridge1 addm tap2
+ifconfig bridge1 addm tap3
+ifconfig bridge1 addm tap5
 ifconfig bridge1 addm wlan0
-# ifconfig bridge1 addm tap5
