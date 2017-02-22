@@ -53,22 +53,22 @@ sysctl net.inet.ip.forwarding=1
 # tap allocations
 #
 # tap0: centos6-hibari3
-# tap1: ubuntu-14.04
-# tap2: rhel7-ost-juno
-# tap3: rhel7-ost-icehouse
+# tap1: centos7-docker2
+# tap2: ubuntu1604-docker2
+# tap3:
 # tap4: openbsd-dev
-# tap5: centos6-vertica
-# tap6: rhel7-ost-liberty (external)
-# tap7: rhel7-ost-liberty (internal)
+# tap5:
+# tap6:
+# tap7:
 
 ifconfig tap0 create
 ifconfig tap1 create
 ifconfig tap2 create
 ifconfig tap3 create
 ifconfig tap4 create
-ifconfig tap5 create
-ifconfig tap6 create
-ifconfig tap7 create
+# ifconfig tap5 create
+# ifconfig tap6 create
+# ifconfig tap7 create
 
 ifconfig bridge0 create
 ifconfig bridge0 172.25.0.1/16 up
@@ -77,6 +77,6 @@ ifconfig bridge0 addm tap1
 ifconfig bridge0 addm tap2
 ifconfig bridge0 addm tap3
 ifconfig bridge0 addm tap4
-ifconfig bridge0 addm tap5
-ifconfig bridge0 addm tap6
-ifconfig bridge0 addm tap7
+# ifconfig bridge0 addm tap5
+# ifconfig bridge0 addm tap6
+# ifconfig bridge0 addm tap7
