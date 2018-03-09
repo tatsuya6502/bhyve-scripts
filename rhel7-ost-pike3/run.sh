@@ -1,14 +1,13 @@
 #!/bin/sh
 
-VM_NAME=rhel7-ost-newton
-RAM_SIZE=4096M
-TAP_DEV=tap8
-VNC_PORT=5901
+VM_NAME=rhel7-ost-pike3
+RAM_SIZE=2048M
+TAP_DEV=tap12
+VNC_PORT=5905
 
-DISK1=/dev/zvol/zroot/bhyve/rh-ost-newton/disk1
-DISK2=/dev/zvol/zroot/bhyve/rh-ost-newton/disk2
-# DISK3=/dev/zvol/zroot/bhyve/rh-ost-newton/disk2-old
-INSTALL_DVD=/home/tatsuya/installers/rhel-7.3/rhel-server-7.3-x86_64-dvd.iso
+DISK1=/dev/zvol/zroot/bhyve/rh-ost-pike3/disk1
+# DISK2=/dev/zvol/zroot/bhyve/rh-ost-pike3/disk2
+INSTALL_DVD=/home/tatsuya/installers/rhel-7.4/rhel-server-7.4-x86_64-dvd.iso
 
 bhyvectl --destroy --vm=$VM_NAME
 rm *.core
@@ -23,7 +22,6 @@ set e
 #       -s 2:0,virtio-net,$TAP_DEV \
 #       -s 3,ahci-cd,$INSTALL_DVD \
 #       -s 4,virtio-blk,$DISK1 \
-#       -s 5,virtio-blk,$DISK2 \
 #       -s 29,fbuf,tcp=0.0.0.0:$VNC_PORT,w=1280,h=800 \
 #       -s 30,xhci,tablet \
 #       -l bootrom,/usr/local/share/uefi-firmware/BHYVE_UEFI.fd \
@@ -36,10 +34,11 @@ bhyve -c 4 -m $RAM_SIZE -H -P -A -u \
       -s 1:0,lpc \
       -s 2:0,virtio-net,$TAP_DEV \
       -s 3,virtio-blk,$DISK1 \
-      -s 4,virtio-blk,$DISK2 \
       -s 29,fbuf,tcp=0.0.0.0:$VNC_PORT,w=1280,h=800 \
       -s 30,xhci,tablet \
       -l bootrom,/usr/local/share/uefi-firmware/BHYVE_UEFI.fd \
       $VM_NAME
 
-bhyvectl --destroy --vm=$VM_NAME
+#       -s 4,virtio-blk,$DISK2 \
+
+# bhyvectl --destroy --vm=$VM_NAME

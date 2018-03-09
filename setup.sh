@@ -15,9 +15,11 @@ sysctl net.inet.ip.forwarding=1
 # tap5: ubuntu1604-docker1
 # tap6: openbsd - local
 # tap7: rhel7-ost-mitaka
-# tap8: rhel7-ost-newton
+# tap8: (unused)
 # tap9: rhel7-ost-ocata
 # tap10: rhel7-ost-pike
+# tap11: rhel7-ost-pike2 (temp)
+# tap12: rhel7-ost-pike3 (temp)
 
 ifconfig tap0 create
 ifconfig tap1 create
@@ -30,6 +32,8 @@ ifconfig tap7 create
 ifconfig tap8 create
 ifconfig tap9 create
 ifconfig tap10 create
+ifconfig tap11 create  # (temp)
+ifconfig tap12 create  # (temp)
 
 # DS57U5 has two NICs, em0 and igb0
 # Global Bridge (OpenBSD)
@@ -48,4 +52,6 @@ ifconfig bridge1 addm tap7
 ifconfig bridge1 addm tap8
 ifconfig bridge1 addm tap9
 ifconfig bridge1 addm tap10
+ifconfig bridge1 addm tap11 # (temp)
+ifconfig bridge1 addm tap12 # (temp)
 ifconfig bridge1 addm wlan0

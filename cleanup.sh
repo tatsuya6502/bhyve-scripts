@@ -13,6 +13,8 @@ ifconfig tap7 down
 ifconfig tap8 down
 ifconfig tap9 down
 ifconfig tap10 down
+ifconfig tap11 down  # (temp)
+ifconfig tap12 down  # (temp)
 
 ifconfig bridge0 destroy
 ifconfig bridge1 destroy
@@ -27,6 +29,8 @@ ifconfig tap7 destroy
 ifconfig tap8 destroy
 ifconfig tap9 destroy
 ifconfig tap10 destroy
+ifconfig tap11 destroy  # (temp)
+ifconfig tap12 destroy  # (temp)
 
 kldunload vmm
 kldunload nmdm
