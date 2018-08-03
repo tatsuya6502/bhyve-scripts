@@ -3,7 +3,7 @@
 bhyvectl --destroy --vm=rhel7-ost-liberty
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,msdos1 -M 4096M rhel7-ost-liberty < ./grub.in > /dev/null
 

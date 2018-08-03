@@ -3,7 +3,7 @@
 bhyvectl --destroy --vm=ubuntu-14.04
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,msdos1 -M 2048M ubuntu-14.04 < ./grub.in > /dev/null
 

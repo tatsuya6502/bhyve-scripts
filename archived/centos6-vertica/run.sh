@@ -3,7 +3,7 @@
 bhyvectl --destroy --vm=centos6-vertica
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,msdos1 -M 4096M centos6-vertica < ./grub.in > /dev/null
 

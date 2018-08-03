@@ -3,7 +3,7 @@
 bhyvectl --destroy --vm=openbsd-dev
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,openbsd1 -M 4096M openbsd-dev < ./grub.in > /dev/null
 

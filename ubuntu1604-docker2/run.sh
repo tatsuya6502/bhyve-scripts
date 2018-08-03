@@ -7,7 +7,7 @@ TAP_DEV=tap2
 bhyvectl --destroy --vm=$VM_NAME
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,msdos1 -M $RAM_SIZE $VM_NAME
 

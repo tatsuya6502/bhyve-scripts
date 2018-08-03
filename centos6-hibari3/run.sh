@@ -3,7 +3,7 @@
 bhyvectl --destroy --vm=centos6-hibari3
 rm *.core
 
-set e
+set -e
 
 grub-bhyve -m device.map -r hd0,msdos1 -M 4096M centos6-hibari3 < ./grub.in > /dev/null
 
