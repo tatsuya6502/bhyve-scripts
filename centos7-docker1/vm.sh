@@ -17,7 +17,7 @@ run_vm_with_installer_cd()
         -s 0:0,hostbridge \
         -s 2:0,virtio-net,$TAP_DEV \
         -s 3,ahci-cd,$CD \
-        -s 4,ahci-hd,$DISK1 \
+        -s 4,virtio-blk,$DISK1 \
         -s 29,fbuf,tcp=0.0.0.0:$VNC_PORT,w=1280,h=720 \
         -s 30,xhci,tablet \
         -s 31,lpc -l com1,stdio \
