@@ -53,9 +53,9 @@ sysctl net.inet.ip.forwarding=1
 # tap allocations
 #
 # tap0: centos6-hibari3
-# tap1: centos7-docker2
+# tap1: centos7-docker1
 # tap2: ubuntu1604-docker2
-# tap3: fedora25
+# tap3: fedora
 # tap4: openbsd-dev
 # tap5:
 # tap6:

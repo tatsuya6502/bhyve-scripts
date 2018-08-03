@@ -8,9 +8,9 @@ sysctl net.link.tap.up_on_open=1
 sysctl net.inet.ip.forwarding=1
 
 # tap0: centos6-hibari3
-# tap1: centos7-docker2
+# tap1: centos7-docker1
 # tap2: ubuntu1604-docker2
-# tap3: fedora25
+# tap3: fedora
 # tap4: openbsd-dev
 # tap5:
 # tap6:
@@ -26,7 +26,7 @@ ifconfig tap4 create
 # ifconfig tap7 create
 
 ifconfig bridge0 create
-ifconfig bridge0 addm bge0 up
+ifconfig bridge0 addm em0 up
 ifconfig bridge0 addm tap0
 ifconfig bridge0 addm tap1
 ifconfig bridge0 addm tap2
