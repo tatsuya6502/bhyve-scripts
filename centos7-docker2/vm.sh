@@ -6,7 +6,12 @@ RAM_SIZE=8G
 TAP_DEV=tap2
 VNC_PORT=5902
 
-DISK1=/dev/zvol/zdata77/bhyve/cent7d2/disk1
+# DISK1=/dev/zvol/zdata77/bhyve/cent7d2/disk1   # broken. do not use.
+DISK1=/dev/zvol/zdata77/bhyve/cent7d2/disk1b    # this is the default volume.
+                                                # when disk1 broke, this one is created from
+                                                # an old snapshot.
+# DISK1=/dev/zvol/zdata77/bhyve/cent7d2/disk1c  # disk1b with a static IP for Clodian Tokyo Office or Sapporo Home
+
 DISK2=/dev/zvol/zroot/bhyve/cent7d2/disk2
 CD=/home/tatsuya/installers/centos7/CentOS-7-x86_64-Minimal-1804.iso
 

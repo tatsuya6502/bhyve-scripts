@@ -97,8 +97,11 @@ $ sudo zfs clone zroot/bhyve/centos7/disk1@${BASEIMAGE_DATE} \
 
 ## Prerequisites
 
-(**TODO**) Install grub-bhyve etc.
+(**TODO**) Install grub-bhyve2 etc.
 
+bhyve-firmware
+
+https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/virtualization-host-bhyve.html
 
 ## Load Kernel Modules and Create Tap Devices
 
