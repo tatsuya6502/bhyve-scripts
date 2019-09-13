@@ -13,7 +13,7 @@ CD=/home/tatsuya/installers/centos7/CentOS-7-x86_64-Minimal-1804.iso
 
 run_vm_with_installer_cd()
 {
-    bhyve -c $NUM_CPUS -m $RAM_SIZE -H -P -A \
+    bhyve -c $NUM_CPUS -m $RAM_SIZE -H -P -A -u \
         -s 0:0,hostbridge \
         -s 2:0,virtio-net,$TAP_DEV \
         -s 3,ahci-cd,$CD \
@@ -27,7 +27,7 @@ run_vm_with_installer_cd()
 
 run_vm()
 {
-    bhyve -c $NUM_CPUS -m $RAM_SIZE -H -P -A \
+    bhyve -c $NUM_CPUS -m $RAM_SIZE -H -P -A -u \
         -s 0:0,hostbridge \
         -s 2:0,virtio-net,$TAP_DEV \
         -s 3,virtio-blk,$DISK1 \
