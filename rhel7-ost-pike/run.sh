@@ -6,9 +6,20 @@ RAM_SIZE=6144M
 TAP_DEV=tap10
 VNC_PORT=5903
 
+# 1. OpenStack Pike installed (clean)
+# DISK1=/dev/zvol/zssd/bhyve/rh-ost-pike/disk1
+
+# 2. OpenStack Pike and connector development
+# DISK1=/dev/zvol/zssd/bhyve/rh-ost-pike/disk1b
+
+# 3. For GA test (clone of #1)
+DISK1=/dev/zvol/zssd/bhyve/rh-ost-pike/disk1-gatst
+
+# Old Disk1
 # DISK1=/dev/zvol/zroot/bhyve/rh-ost-pike/disk1
 # DISK1=/dev/zvol/zroot/bhyve/rh-ost-pike/disk1c
-DISK1=/dev/zvol/zssd/bhyve/rh-ost-pike/disk1
+
+# Other Disks
 DISK2=/dev/zvol/zroot/bhyve/rh-ost-pike/disk2
 INSTALL_DVD=/home/tatsuya/installers/rhel-7.4/rhel-server-7.4-x86_64-dvd.iso
 
